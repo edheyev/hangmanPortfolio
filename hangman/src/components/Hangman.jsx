@@ -1,7 +1,7 @@
 import React from "react";
 
-const Hangman = () => {
-  return <div>HANGMAN</div>;
+const Hangman = ({ hangmanCount }) => {
+  return <div>{hangmanCount}</div>;
 };
 
 export default Hangman;
