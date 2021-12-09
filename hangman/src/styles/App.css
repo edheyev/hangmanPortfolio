@@ -1,0 +1,15 @@
+main {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.left_side {
+  border: 1px solid black;
+}
+.center {
+  border: 1px solid black;
+}
+.right_side {
+  border: 1px solid black;
+}

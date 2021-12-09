@@ -1,0 +1,18 @@
+- input for single letter
+- each guess, 
+    if correct letter appears inside word
+    if incorrect start drawing hangman
+
+- complete hangman takes 10 guesses
+- keep list of guessed letters - green/red
+
+- message on completion
+
+-track player score
+- levels of difficulty based on word length and player score
+
+-visual progression of levels
+
+optional
+- import random word from dictionary api
+- p5 animations
