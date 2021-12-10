@@ -1,15 +1,15 @@
 import React from "react";
-
+import "../styles/GuessedLetters.css";
 const GuessedLetters = ({ guessedLetters }) => {
   return (
-    <>
-      <h1>Guessed Letters:</h1>
-      <ul>
+    <div className="letters-container">
+      <h3>Guessed Letters:</h3>
+      <div className="letters">
         {guessedLetters.map((letter, i) => {
-          return <li key={i}>{letter}</li>;
+          return <p key={i}>{letter}</p>;
         })}
-      </ul>
-    </>
+      </div>
+    </div>
   );
 };
 

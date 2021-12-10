@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-
-const UserInput = ({ currentLetter, setCurrentLetter }) => {
+import React, { useState, useRef } from "react";
+import Button from "./Button";
+import "../styles/UserInput.css";
+const UserInput = ({ currentLetter, setCurrentLetter, currentlyGuessing }) => {
   const [inputValue, setInputValue] = useState("");
+  const inputRef = useRef();
 
   const handleInput = (event) => {
     setInputValue(event.target.value);
@@ -13,6 +15,7 @@ const UserInput = ({ currentLetter, setCurrentLetter }) => {
       setCurrentLetter(inputValue);
       setInputValue("");
     }
+    inputRef.current.focus();
   };
 
   return (
@@ -23,8 +26,10 @@ const UserInput = ({ currentLetter, setCurrentLetter }) => {
         type="text"
         onChange={handleInput}
         maxLength="1"
+        ref={inputRef}
+        disabled={!currentlyGuessing}
       />
-      <button type="submit">Guess</button>
+      <Button type="submit" text="Guess" disabled={!currentlyGuessing} />
     </form>
   );
 };

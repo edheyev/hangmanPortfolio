@@ -1,10 +1,9 @@
 p {
   margin: 10px;
+  font-size: 3rem;
+  font-weight: 300;
 }
 
 .guessed {
-  color: green;
-}
-.not_guessed {
-  color: red;
+  color: #355070;
 }

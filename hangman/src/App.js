@@ -13,9 +13,18 @@ function App() {
   const [words, setWords] = useState(["banana", "cat"]);
   const [currentWord, setCurrentWord] = useState(null);
   const [currentLetter, setCurrentLetter] = useState("");
-  const [hangmanCount, setHangmanCount] = useState(0);
+  const [hangmanCount, setHangmanCount] = useState(10);
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [wordComplete, setWordComplete] = useState(false);
+  const [currentlyGuessing, setCurrentlyGuessing] = useState(true);
+  const [gameOver, setGameOver] = useState(false);
+
+  useEffect(() => {
+    if (hangmanCount === 0) {
+      setCurrentlyGuessing(false);
+      setGameOver(true);
+    }
+  }, [hangmanCount]);
 
   useEffect(() => {
     if (currentWord) {
@@ -23,6 +32,7 @@ function App() {
         (letter) => letter === true
       );
       if (wordComplete) {
+        setCurrentlyGuessing(false);
         setWordComplete(true);
       }
     }
@@ -42,7 +52,7 @@ function App() {
         });
       } else {
         setHangmanCount((prevCount) => {
-          return prevCount + 1;
+          return prevCount - 1;
         });
       }
 
@@ -52,6 +62,14 @@ function App() {
     }
   }, [currentLetter]);
 
+  const initGame = () => {
+    //get 15 words into array
+
+    const randomNum = Math.random() * 100000;
+  };
+
+  useEffect(() => {}, []);
+
   const nextWord = () => {
     setWords((prevWords) => {
       const newWords = [...prevWords];
@@ -59,37 +77,47 @@ function App() {
       return newWords;
     });
     setWordComplete(false);
+    setCurrentlyGuessing(true);
     setGuessedLetters([]);
-    setHangmanCount(0);
+    setHangmanCount(10);
   };
 
   return (
     <main>
-      <div className="left_side">
-        <GuessedLetters guessedLetters={guessedLetters} />
-      </div>
-      <div className="center">
-        <Word
-          currentWord={currentWord}
-          setCurrentWord={setCurrentWord}
-          words={words}
-          currentLetter={currentLetter}
-        />
-        <Hangman hangmanCount={hangmanCount} />
-        {wordComplete && (
-          <div>
-            <Message />
-            <Button text="Continue..." func={nextWord} />
-          </div>
-        )}
-        <UserInput
-          currentLetter={currentLetter}
-          setCurrentLetter={setCurrentLetter}
-        />
-      </div>
-      <div className="right_side">
-        <Progression />
-        <Score />
+      <div className="container">
+        <div className="left_side">
+          <GuessedLetters guessedLetters={guessedLetters} />
+        </div>
+        <div className="center">
+          <Word
+            currentWord={currentWord}
+            setCurrentWord={setCurrentWord}
+            words={words}
+            currentLetter={currentLetter}
+          />
+          <Hangman hangmanCount={hangmanCount} />
+          {gameOver && (
+            <div>
+              <Message text="GAME OVER" />
+              <Button text="Play again?" func={initGame} />
+            </div>
+          )}
+          {wordComplete && (
+            <div>
+              <Message text="You guessed it!" />
+              <Button text="Continue..." func={nextWord} />
+            </div>
+          )}
+          <UserInput
+            currentLetter={currentLetter}
+            setCurrentLetter={setCurrentLetter}
+            currentlyGuessing={currentlyGuessing}
+          />
+        </div>
+        <div className="right_side">
+          <Progression />
+          <Score />
+        </div>
       </div>
     </main>
   );
