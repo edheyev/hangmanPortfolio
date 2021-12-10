@@ -17,6 +17,14 @@ main {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.messages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 30px;
+  flex-direction: column;
+}
+
 .left_side {
   padding: 30px;
 }

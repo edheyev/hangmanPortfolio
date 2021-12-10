@@ -8,6 +8,7 @@ import Score from "./components/Score";
 import UserInput from "./components/UserInput";
 import Word from "./components/Word";
 import "./styles/App.css";
+const axios = require("axios");
 
 function App() {
   const [words, setWords] = useState(["banana", "cat"]);
@@ -18,6 +19,13 @@ function App() {
   const [wordComplete, setWordComplete] = useState(false);
   const [currentlyGuessing, setCurrentlyGuessing] = useState(true);
   const [gameOver, setGameOver] = useState(false);
+  const [completedWords, setCompletedWords] = useState([]);
+  const [currentScore, setCurrentScore] = useState(0);
+  const [currentMaxScore, setCurrentMaxScore] = useState(0);
+
+  useEffect(() => {
+    getWords();
+  }, []);
 
   useEffect(() => {
     if (hangmanCount === 0) {
@@ -62,20 +70,52 @@ function App() {
     }
   }, [currentLetter]);
 
+  const getWords = () => {
+    axios
+      .get("https://random-word-api.herokuapp.com/word?number=10")
+      .then(function (response) {
+        // handle success
+        console.log(response.data);
+        setWords(response.data);
+      });
+  };
+
   const initGame = () => {
     //get 15 words into array
+    // const randomNum = Math.random() * 100000;
+    getWords();
 
-    const randomNum = Math.random() * 100000;
+    setWords(["banana", "cat"]);
+    setGameOver(false);
+    setCurrentScore(0);
+    setCurrentMaxScore(0);
+    setCompletedWords([]);
+    setWordComplete(false);
+    setCurrentlyGuessing(true);
+    setGuessedLetters([]);
+    setHangmanCount(10);
   };
 
   useEffect(() => {}, []);
 
   const nextWord = () => {
+    setCurrentScore((prevSc) => {
+      return (prevSc += hangmanCount);
+    });
+    setCurrentMaxScore((prevSc) => {
+      return (prevSc += 10);
+    });
+    setCompletedWords((prevComWords) => {
+      const newWords = [...prevComWords];
+      newWords.push(currentWord.word);
+      return newWords;
+    });
     setWords((prevWords) => {
       const newWords = [...prevWords];
       newWords.shift();
       return newWords;
     });
+    setGameOver(false);
     setWordComplete(false);
     setCurrentlyGuessing(true);
     setGuessedLetters([]);
@@ -97,15 +137,15 @@ function App() {
           />
           <Hangman hangmanCount={hangmanCount} />
           {gameOver && (
-            <div>
+            <div className="messages">
               <Message text="GAME OVER" />
               <Button text="Play again?" func={initGame} />
             </div>
           )}
           {wordComplete && (
-            <div>
+            <div className="messages">
               <Message text="You guessed it!" />
-              <Button text="Continue..." func={nextWord} />
+              <Button className="continue" text="Continue..." func={nextWord} />
             </div>
           )}
           <UserInput
@@ -115,8 +155,11 @@ function App() {
           />
         </div>
         <div className="right_side">
-          <Progression />
-          <Score />
+          <Progression completedWords={completedWords} />
+          <Score
+            currentScore={currentScore}
+            currentMaxScore={currentMaxScore}
+          />
         </div>
       </div>
     </main>
