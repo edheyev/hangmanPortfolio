@@ -70,6 +70,20 @@ function App() {
     }
   }, [currentLetter]);
 
+  useEffect(() => {
+    words.forEach((word) => {
+      axios
+        .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
+        .then((result) => {
+          console.log(word);
+          console.log(result.data[0].meanings[0].definitions[0].definition);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  }, [words]);
+
   const getWords = () => {
     axios
       .get("https://random-word-api.herokuapp.com/word?number=10")
@@ -79,6 +93,14 @@ function App() {
         setWords(response.data);
       });
   };
+
+  // const getDef = async (word) => {
+  //   const result = await axios.get(
+  //     `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+  //   );
+
+  //   return result;
+  // };
 
   const initGame = () => {
     //get 15 words into array

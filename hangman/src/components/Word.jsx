@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Letter from "./Letter";
 import "../styles/Word.css";
+const axios = require("axios");
 
 const Word = ({ currentWord, setCurrentWord, words, currentLetter }) => {
   useEffect(() => {
@@ -14,8 +15,14 @@ const Word = ({ currentWord, setCurrentWord, words, currentLetter }) => {
     wordArray.forEach((word) => {
       wordObject.letters[word] = false;
     });
-
-    setCurrentWord(wordObject);
+    axios
+      .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordObject.word}`)
+      .then((result) => {
+        wordObject.definition =
+          result.data[0].meanings[0].definitions[0].definition;
+        setCurrentWord(wordObject);
+      })
+      .catch((err) => {});
   }, [words]);
   return (
     <div className="word">
