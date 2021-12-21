@@ -3,26 +3,40 @@ import Letter from "./Letter";
 import "../styles/Word.css";
 const axios = require("axios");
 
-const Word = ({ currentWord, setCurrentWord, words, currentLetter }) => {
+const Word = ({
+  currentWord,
+  setCurrentWord,
+  words,
+  currentLetter,
+  loading,
+}) => {
   useEffect(() => {
-    const wordArray = words[0].split("");
+    if (!loading > 0) {
+      console.log("words", words, words[0]);
+    }
+    const wordArray = words[0]?.word.split("");
 
     const wordObject = {
-      word: words[0],
+      word: words[0]?.word,
       letters: {},
+      definition: words[0]?.definition,
     };
 
-    wordArray.forEach((word) => {
-      wordObject.letters[word] = false;
+    wordArray.forEach((letter) => {
+      wordObject.letters[letter] = false;
     });
-    axios
-      .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordObject.word}`)
-      .then((result) => {
-        wordObject.definition =
-          result.data[0].meanings[0].definitions[0].definition;
-        setCurrentWord(wordObject);
-      })
-      .catch((err) => {});
+
+    // axios
+    //   .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordObject.word}`)
+    //   .then((result) => {
+    //     wordObject.definition =
+    //       result.data[0].meanings[0].definitions[0]?.definition;
+    //     console.log(result.data[0]);
+    //     setCurrentWord(wordObject);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }, [words]);
   return (
     <div className="word">

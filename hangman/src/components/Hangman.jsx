@@ -21,8 +21,6 @@ let leg2Y = 300;
 
 export default ({ hangmanCount }) => {
   const setup = (p5, canvasParentRef) => {
-    // use parent to render the canvas in this ref
-    // (without that p5 will render the canvas outside of your component)
     p5.createCanvas(500, 500).parent(canvasParentRef);
   };
 
@@ -35,37 +33,37 @@ export default ({ hangmanCount }) => {
     let baseY = 490;
     p5.frameRate(200);
 
-    if (hangmanCount === 10) {
+    if (hangmanCount <= 10) {
       p5.background("#B56576");
     }
-    if (hangmanCount === 9) {
+    if (hangmanCount <= 9) {
       p5.line(120, baseY, baseLine, baseY);
       if (baseLine < baselineStop) {
         baseLine += 15;
       }
     }
-    if (hangmanCount === 8) {
+    if (hangmanCount <= 8) {
       //vertical line
       p5.line(200, 490, 200, vertLine);
       if (vertLine > 100) {
         vertLine -= 15;
       }
     }
-    if (hangmanCount === 7) {
+    if (hangmanCount <= 7) {
       //upper cross
       p5.line(200, 100, upLine, 100);
       if (upLine < 320) {
         upLine += 15;
       }
     }
-    if (hangmanCount === 6) {
+    if (hangmanCount <= 6) {
       //noose
       p5.line(320, 100, 320, noLine);
       if (noLine < 140) {
         noLine += 15;
       }
     }
-    if (hangmanCount === 5) {
+    if (hangmanCount <= 5) {
       //head
       p5.fill("#B56576");
       p5.ellipse(320, 170, headSize, headSize);
@@ -73,14 +71,14 @@ export default ({ hangmanCount }) => {
         headSize += 15;
       }
     }
-    if (hangmanCount === 4) {
+    if (hangmanCount <= 4) {
       //body
       p5.line(320, 195, 320, bodyLine);
       if (bodyLine < 300) {
         bodyLine += 15;
       }
     }
-    if (hangmanCount === 3) {
+    if (hangmanCount <= 3) {
       //arm1
       p5.line(320, 200, arm1X, arm1Y);
       if (arm1X > 270) {
@@ -88,7 +86,7 @@ export default ({ hangmanCount }) => {
         arm1Y += 15;
       }
     }
-    if (hangmanCount === 2) {
+    if (hangmanCount <= 2) {
       //arm2
       p5.line(320, 200, arm2X, arm2Y);
       if (arm2X < 370) {
@@ -96,7 +94,7 @@ export default ({ hangmanCount }) => {
         arm2Y += 15;
       }
     }
-    if (hangmanCount === 1) {
+    if (hangmanCount <= 1) {
       //leg1
       p5.line(320, 300, leg1X, leg1Y);
       if (leg1X > 270) {
@@ -104,7 +102,7 @@ export default ({ hangmanCount }) => {
         leg1Y += 15;
       }
     }
-    if (hangmanCount === 0) {
+    if (hangmanCount <= 0) {
       //leg2
       p5.line(320, 300, leg2X, leg2Y);
       if (leg2X < 370) {
@@ -112,21 +110,14 @@ export default ({ hangmanCount }) => {
         leg2Y += 15;
       }
     }
-    // NOTE: Do not use setState in the draw function or in functions that are executed
-    // in the draw function...
-    // please use normal variables or class properties for these purposes
   };
 
   return (
     <div className="hangman-container">
-      <p>{hangmanCount} tries left...</p>
+      <p>
+        {hangmanCount} {hangmanCount === 1 ? "try" : "tries"} left...
+      </p>
       <Sketch setup={setup} draw={draw} />
     </div>
   );
 };
-
-// const Hangman = ({ hangmanCount }) => {
-//   return <div>{hangmanCount}</div>;
-// };
-
-// export default Hangman;

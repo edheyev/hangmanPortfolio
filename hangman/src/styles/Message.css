@@ -1,4 +1,28 @@
-.mess {
-  font-size: 4em;
-  padding-bottom: 20 px;
+.message {
+  border: 3px solid rgb(219, 68, 68);
+  padding: 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: rgb(226, 9, 9);
+  background-color: rgb(209, 120, 120);
+  transition: all 0.2s ease-in;
+  margin-bottom: 5px;
+}
+
+.positive {
+  border: 3px solid rgb(88, 138, 83);
+
+  color: green;
+  background-color: rgb(140, 206, 134);
+}
+
+.hint {
+  border: 3px solid #dd5524;
+
+  color: #a73b0a;
+  background-color: #f0764a;
+}
+
+.hidden {
+  opacity: 0;
 }

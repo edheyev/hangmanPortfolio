@@ -1,4 +1,5 @@
-.guessedList {
-  font-size: small;
-  text-decoration: line-through;
+.sketch {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }

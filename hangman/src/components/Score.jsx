@@ -1,14 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import "../styles/Score.css";
 
-const Score = ({ currentScore, currentMaxScore }) => {
-  return (
-    <div>
-      <h3>SCORE</h3>
-      <div>
-        {currentScore}/{currentMaxScore}
-      </div>
-    </div>
-  );
+const Score = ({ totalScore }) => {
+  return <div className="score">Total Score: {totalScore}</div>;
 };
 
 export default Score;

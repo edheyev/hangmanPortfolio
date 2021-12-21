@@ -1,0 +1,10 @@
+.score {
+  font-size: 1.3rem;
+  margin-top: 40px;
+  color: #355070;
+  font-weight: bold;
+  border: 3px solid #355070;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #6a7b90;
+}
