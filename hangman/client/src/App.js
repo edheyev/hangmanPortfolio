@@ -11,21 +11,9 @@ import UserInput from "./components/UserInput";
 import Word from "./components/Word";
 import "./styles/App.css";
 
-import Perks from "./components/Perks";
+import { getRandomWords } from "./utils/reqOptions";
 
-const wordsArray = [
-  "banana",
-  "cat",
-  "telephone",
-  "deer",
-  "encyclopedia",
-  "everest",
-  "tyrannosaurus",
-  "helicopter",
-  "egypt",
-  "mathematics",
-  "piranha",
-];
+import Perks from "./components/Perks";
 
 function App() {
   const [words, setWords] = useState(null);
@@ -42,14 +30,6 @@ function App() {
   useEffect(() => {
     getWords();
   }, []);
-
-  useEffect(() => {
-    if (words) {
-      console.log("finished loading");
-      // setLoading(false);
-      // console.log(words[0]);
-    }
-  }, [words]);
 
   const [perks, setPerks] = useState({
     hintPerk: false,
@@ -100,52 +80,18 @@ function App() {
     }
   }, [currentLetter]);
 
-  useEffect(() => {
-    //definitions
-    if (!loading) {
-      // words.forEach((word) => {
-      //   axios
-      //     .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
-      //     .then((result) => {
-      //       console.log(word);
-      //       console.log(result.data[0].meanings[0].definitions[0].definition);
-      //     })
-      //     .catch((err) => {
-      //       console.log(err);
-      //     });
-      // });
-    }
-  }, [words]);
-
   const getWords = async () => {
-    console.log("getting words");
-
-    //words
-    const words = await axios.get(
-      "https://random-word-api.herokuapp.com/word?number=11"
-    );
-    // console.log(words);
-
     const wordsArray = [];
-    words.data.forEach(async (word) => {
-      // console.log(word);
-      try {
-        const wordDef = await axios.get(
-          `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
-        );
-        console.log(wordDef.data[0].meanings[0].definitions[0]?.definition);
+    const words = await getRandomWords();
 
-        const thisWord = {
-          word: word,
-          definition: wordDef.data[0].meanings[0].definitions[0]?.definition,
-        };
-        wordsArray.push(thisWord);
-      } catch (err) {}
-    });
-    // handle success
-    setWords(wordsArray);
-    console.log("GET WORDS", wordsArray, wordsArray[0]);
-    setLoading(false);
+    for (const word of words) {
+      wordsArray.push(word.word);
+    }
+    console.log(wordsArray, "******");
+    if (words) {
+      setWords(wordsArray);
+      setLoading(false);
+    }
   };
 
   const resetPerksNewWord = () => {
@@ -222,7 +168,9 @@ function App() {
                 <Button text="Continue..." func={nextWord} />
               </div>
             )}
-            {perks.hintPerk && <Message text="This is a hint" hint={true} />}
+            {perks.hintPerk && currentWord.definition !== null && (
+              <Message text={currentWord.definition} hint={true} />
+            )}
             <UserInput
               guessedLetters={guessedLetters}
               currentLetter={currentLetter}
@@ -238,6 +186,7 @@ function App() {
               perks={perks}
               setPerks={setPerks}
               setCurrentWord={setCurrentWord}
+              currentWord={currentWord}
               setHangmanCount={setHangmanCount}
               currentlyGuessing={currentlyGuessing}
             />

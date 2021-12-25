@@ -1,17 +1,24 @@
 import React, { useState } from "react";
 import "../styles/Perks.css";
+import { getWordDefinition } from "../utils/reqOptions";
 
 const Perks = ({
   perks,
   setPerks,
   setCurrentWord,
+  currentWord,
   setTotalScore,
   setHangmanCount,
   currentlyGuessing,
 }) => {
-  const hintPerk = () => {
+  const hintPerk = async () => {
     if (currentlyGuessing) {
       if (!perks.hintPerk) {
+        const def = await getWordDefinition(currentWord.word);
+        setCurrentWord((prevCurrentWord) => {
+          return { ...prevCurrentWord, definition: def };
+        });
+        setHangmanCount((prevCount) => prevCount - 3);
         setPerks((prevPerks) => {
           return { ...prevPerks, hintPerk: true };
         });
